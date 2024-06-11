@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário de Aula</title>
+</head>
+<body>
+    <h1>Formulário de Aula</h1>
+    <form action="/submit" method="post">
+        <label for="class">Turma:</label>
+        <input type="text" id="class" name="class" required><br><br>
+        
+        <label for="date">Data:</label>
+        <input type="date" id="date" name="date" required><br><br>
+        
+        <label for="teacher">Professor:</label>
+        <input type="text" id="teacher" name="teacher" required><br><br>
+        
+        <label for="list">Lista:</label>
+        <textarea id="list" name="list" rows="4" cols="50" required></textarea><br><br>
+        
+        <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>
