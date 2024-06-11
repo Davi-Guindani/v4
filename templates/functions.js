@@ -39,20 +39,42 @@ function updateCheckboxes() {
     // Limpar opções atuais
     listDiv.innerHTML = '';
 
-    // Adicionar novas checkboxes com base na seleção
-    options[selectedClass].forEach(option => {
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.id = option.value;
-        checkbox.name = 'specific[]';
-        checkbox.value = option.value;
+    // // Adicionar novas checkboxes com base na seleção
+    // options[selectedClass].forEach(option => {
+    //     const checkbox = document.createElement('input');
+    //     checkbox.type = 'checkbox';
+    //     checkbox.id = option.value;
+    //     checkbox.name = 'specific[]';   
+    //     checkbox.value = option.value;
 
-        const label = document.createElement('label');
-        label.htmlFor = option.value;
-        label.textContent = option.text;
+    //     const label = document.createElement('label');
+    //     label.htmlFor = option.value;
+    //     label.textContent = option.text;
 
-        listDiv.appendChild(checkbox);
-        listDiv.appendChild(label);
-        listDiv.appendChild(document.createElement('br'));
-    });
+    //     listDiv.appendChild(checkbox);
+    //     listDiv.appendChild(label);
+    //     listDiv.appendChild(document.createElement('br'));
+    // });
+
+     // Adicionar novas checkboxes com base na seleção
+     if (selectedClass) {
+        options[selectedClass].forEach(option => {
+            const checkboxContainer = document.createElement('div');
+            checkboxContainer.className = 'checkbox-container';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = option.value;
+            checkbox.name = 'specific[]';
+            checkbox.value = option.value;
+
+            const label = document.createElement('label');
+            label.htmlFor = option.value;
+            label.textContent = option.text;
+
+            checkboxContainer.appendChild(checkbox);
+            checkboxContainer.appendChild(label);
+            listDiv.appendChild(checkboxContainer);
+        });
+    }
 }
