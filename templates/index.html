@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Formulário de Aula</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <h1>Formulário de Aula</h1>
@@ -12,8 +13,8 @@
         <input type="date" id="date" name="date" required><br><br>
 
         <label for="class">Turma:</label>
-        <select id="class" name="class" onchange="updateCheckboxes()">
-            <option value="vazio">Vazio</option>
+        <select id="class" name="class" onchange="updateCheckboxes()" required>
+            <option value="">Selecione uma turma</option>
             <option value="segqua0708">Segunda-Quarta (07-08)</option>
             <option value="segqua1112">Segunda-Quarta (11-12)</option>
             <option value="segqua2122">Segunda-Quarta (21-22)</option>
@@ -23,8 +24,15 @@
         </select><br><br>
         
         <label for="teacher">Professor:</label>
-        <input type="text" id="teacher" name="teacher" required><br><br>
-        
+        <!-- <input type="text" id="teacher" name="teacher" required> -->
+        <select id="teacher" name="teacher" required><br><br>
+            <option value="">Selecione um professor</option>
+            <option value="pedro">Pedro</option>
+            <option value="julio">Julio</option>
+            <option value="paulo">Paulo</option>
+        </select><br><br>
+
+
         <label for="list">Lista:</label>
         <div id="list">
             <!-- As checkboxes serão adicionadas dinamicamente pelo JavaScript -->
@@ -33,65 +41,6 @@
         <button type="submit">Enviar</button>
     </form>
 
-    <script>
-        function updateCheckboxes() {
-            const classSelect = document.getElementById('class');
-            const listDiv = document.getElementById('list');
-            const selectedClass = classSelect.value;
-
-            const options = {
-                segqua0708: [
-                    { value: 'manel', text: 'Manel' },
-                    { value: 'bernardo', text: 'Bernardo' },
-                    { value: 'pipico', text: 'Pipico' }
-                ],
-                segqua1112: [
-                    { value: 'ana', text: 'Ana' },
-                    { value: 'alice', text: 'Alice' },
-                    { value: 'andré', text: 'André' },
-                ],
-                segqua2122: [
-                    { value: 'thales', text: 'Thales' },
-                    { value: 'amanda', text: 'Amanda' },
-                    { value: 'letícia', text: 'Letícia' },
-                ],
-                terqui0910: [
-                    { value: 'natasha', text: 'Natasha' },
-                    { value: 'luiza', text: 'Luiza' },
-                    { value: 'gabriela', text: 'Gabriela' },
-                ],
-                terqui1314: [
-                    { value: 'mariana', text: 'Mariana' },
-                    { value: 'davi', text: 'Davi' },
-                    { value: 'eduardo', text: 'Eduardo' },
-                ],
-                terqui1415: [
-                    { value: 'rafael', text: 'Rafael' },
-                    { value: 'jennifer', text: 'Jennifer' },
-                    { value: 'luiz', text: 'Luiz' },
-                ]
-            };
-
-            // Limpar opções atuais
-            listDiv.innerHTML = '';
-
-            // Adicionar novas checkboxes com base na seleção
-            options[selectedClass].forEach(option => {
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = option.value;
-                checkbox.name = 'specific[]';
-                checkbox.value = option.value;
-
-                const label = document.createElement('label');
-                label.htmlFor = option.value;
-                label.textContent = option.text;
-
-                listDiv.appendChild(checkbox);
-                listDiv.appendChild(label);
-                listDiv.appendChild(document.createElement('br'));
-            });
-        }
-    </script>
+    <script src="functions.js"></script>
 </body>
 </html>
