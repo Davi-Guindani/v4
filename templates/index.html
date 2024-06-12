@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Formulário de Aula</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <!-- <h1>Formulário de Aula</h1> -->
@@ -24,6 +24,7 @@
             <option value="terqui1415">Terça-Quinta (14-15)</option>
         </select><br><br>
         
+        
         <label for="teacher">Professor:</label>
         <!-- <input type="text" id="teacher" name="teacher" required> -->
         <select id="teacher" name="teacher" required><br><br>
@@ -42,6 +43,6 @@
         <button type="submit">Enviar</button>
     </form>
 
-    <script src="functions.js"></script>
+    <script src="{{ url_for('static', filename='functions.js') }}"></script>
 </body>
 </html>

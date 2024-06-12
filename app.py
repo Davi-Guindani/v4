@@ -13,7 +13,10 @@ def submit():
     class_name = request.form.get('class')
     date = request.form.get('date')
     teacher = request.form.get('teacher')
-    list_items = request.form.get('list')
+    list_items = request.form.get('specific[]')
+
+    # Concatena os itens da lista em uma string
+    list_items_str = request.form.get('list')
 
     # Verifica se o arquivo já existe
     file_exists = os.path.isfile('dados.xlsx')
@@ -27,7 +30,7 @@ def submit():
     df = pd.read_excel('dados.xlsx')
 
     # Cria um novo DataFrame com os novos dados
-    new_data = pd.DataFrame({'Turma': [class_name], 'Data': [date], 'Professor': [teacher], 'Lista': [list_items]})
+    new_data = pd.DataFrame({'Turma': [class_name], 'Data': [date], 'Professor': [teacher], 'Lista': [list_items_str]})
 
     # Concatena os DataFrames
     df = pd.concat([df, new_data], ignore_index=True)
@@ -38,9 +41,9 @@ def submit():
     print(f'Turma: {class_name}')
     print(f'Data: {date}')
     print(f'Professor: {teacher}')
-    print(f'Lista: {list_items}')
+    print(f'Lista: {list_items_str}')
     
-    return f'Dados recebidos e armazenados: Turma - {class_name}, Data - {date}, Professor - {teacher}, Lista - {list_items}'
+    return f'Dados recebidos e armazenados: Turma - {class_name}, Data - {date}, Professor - {teacher}, Lista - {list_items_str}'
 
 if __name__ == '__main__':
     app.run(debug=True)

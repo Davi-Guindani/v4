@@ -5,34 +5,34 @@ function updateCheckboxes() {
 
     const options = {
         segqua0708: [
-            { value: 'manel', text: 'Manel' },
-            { value: 'bernardo', text: 'Bernardo' },
-            { value: 'pipico', text: 'Pipico' }
+            { value: 'Manel', text: 'Manel' },
+            { value: 'Bernardo', text: 'Bernardo' },
+            { value: 'Pipico', text: 'Pipico' }
         ],
         segqua1112: [
-            { value: 'ana', text: 'Ana' },
-            { value: 'alice', text: 'Alice' },
-            { value: 'andré', text: 'André' },
+            { value: 'Ana', text: 'Ana' },
+            { value: 'Alice', text: 'Alice' },
+            { value: 'André', text: 'André' },
         ],
         segqua2122: [
-            { value: 'thales', text: 'Thales' },
-            { value: 'amanda', text: 'Amanda' },
-            { value: 'letícia', text: 'Letícia' },
+            { value: 'Thales', text: 'Thales' },
+            { value: 'Amanda', text: 'Amanda' },
+            { value: 'Letícia', text: 'Letícia' },
         ],
         terqui0910: [
-            { value: 'natasha', text: 'Natasha' },
-            { value: 'luiza', text: 'Luiza' },
-            { value: 'gabriela', text: 'Gabriela' },
+            { value: 'Natasha', text: 'Natasha' },
+            { value: 'Luiza', text: 'Luiza' },
+            { value: 'Gabriela', text: 'Gabriela' },
         ],
         terqui1314: [
-            { value: 'mariana', text: 'Mariana' },
-            { value: 'davi', text: 'Davi' },
-            { value: 'eduardo', text: 'Eduardo' },
+            { value: 'Mariana', text: 'Mariana' },
+            { value: 'Davi', text: 'Davi' },
+            { value: 'Eduardo', text: 'Eduardo' },
         ],
         terqui1415: [
-            { value: 'rafael', text: 'Rafael' },
-            { value: 'jennifer', text: 'Jennifer' },
-            { value: 'luiz', text: 'Luiz' },
+            { value: 'Rafael', text: 'Rafael' },
+            { value: 'Jennifer', text: 'Jennifer' },
+            { value: 'Luiz', text: 'Luiz' },
         ]
     };
 
@@ -57,7 +57,7 @@ function updateCheckboxes() {
     // });
 
      // Adicionar novas checkboxes com base na seleção
-     if (selectedClass) {
+     if (selectedClass && options[selectedClass]) {
         options[selectedClass].forEach(option => {
             const checkboxContainer = document.createElement('div');
             checkboxContainer.className = 'checkbox-container';
@@ -78,3 +78,23 @@ function updateCheckboxes() {
         });
     }
 }
+
+function gatherCheckboxValues() {
+    const checkboxes = document.querySelectorAll('.checkbox-container input[type="checkbox"]:checked');
+    const values = Array.from(checkboxes).map(checkbox => {
+        const label = document.querySelector(`label[for="${checkbox.id}"]`);
+        return label ? label.textContent.trim() : checkbox.value;
+    }); 
+    return values.join(', ');
+}
+
+document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const listInput = document.createElement('input');
+    listInput.type = 'hidden';
+    listInput.name = 'list';
+    listInput.value = gatherCheckboxValues();
+    this.appendChild(listInput);
+    this.submit();
+});
+

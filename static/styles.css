@@ -53,7 +53,7 @@ select {
 .checkbox-container {
     display: flex;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
 }
 
 .checkbox-container input[type="checkbox"] {
