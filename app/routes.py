@@ -27,23 +27,3 @@ def index():
         print(f"Erro ao buscar turmas e lugares: {e}")
 
     return render_template('index.html', classes=classes, teachers=teachers)
-
-@app.route('/submit', methods=['POST'])
-def submit():
-    name = request.form.get('name')
-    email = request.form.get('email')
-    selected_class = request.form.get('selected_class')
-
-    if name and email and selected_class:
-        processed_data = {
-            'name': name.title(),
-            'email': email,
-            'class_id': selected_class
-        }
-
-        try:
-            response = app.supabase.table('your_table_name').insert(processed_data).execute()
-            return "Dados enviados com sucesso!"
-        except Exception as e:
-            return f"Ocorreu um erro: {e}"
-    return render_template('index.html', error="Por favor, preencha todos os campos.")
