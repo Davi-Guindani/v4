@@ -6,34 +6,35 @@ def index():
         classes_response = app.supabase.table('CLASSES').select('*').execute()
         classes = classes_response.data
 
-        teachers_response = app.supabase.table('TEACHERS').select('*').execute()
-        teachers = teachers_response.data
+        # Obter todos os place_ids únicos das classes
+        place_ids = list(set([c['place_id'] for c in classes]))
 
-        # Obter todos os core_ids únicos das turmas
-        core_ids = list(set([c['core_id'] for c in classes]))
-
-        # Buscar todos os núcleos correspondentes aos core_ids
-        cores_response = app.supabase.table('CORES').select('*').in_('id', core_ids).execute()
-        cores = cores_response.data
+        # Buscar todos os lugares correspondentes aos place_ids
+        places_response = app.supabase.table('PLACES').select('*').in_('id', place_ids).execute()
+        places = places_response.data
 
         # Criar um dicionário de places para fácil acesso
-        cores_dict = {core['id']: core['core'] for core in cores}
+        places_dict = {place['id']: place['place'] for place in places}
 
         # Adicionar o valor do place a cada classe
         for c in classes:
-            c['core'] = cores_dict.get(c['core_id'], 'Unknown')
+            c['place'] = places_dict.get(c['place_id'], 'Unknown')
     except Exception as e:
         classes = []
         print(f"Erro ao buscar turmas e lugares: {e}")
     
-    return render_template('index.html', classes=classes, teachers=teachers)
+    return render_template('index.html', classes=classes)
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    selected_class = request.form.get('class')
+    name = request.form.get('name')
+    email = request.form.get('email')
+    selected_class = request.form.get('selected_class')
 
-    if selected_class:
+    if name and email and selected_class:
         processed_data = {
+            'name': name.title(),
+            'email': email,
             'class_id': selected_class
         }
 
