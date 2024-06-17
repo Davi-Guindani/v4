@@ -9,9 +9,12 @@ $(document).ready(function() {
                 var studentsContainer = $('#students-container');
                 studentsContainer.empty(); // Limpa o contêiner antes de adicionar novos checkboxes
                 response.students.forEach(function(student) {
+                    // Capitaliza todas as palavras do nome do aluno
+                    var studentName = capitalize(student.name);
+                    
                     studentsContainer.append(
                         '<input type="checkbox" name="students" value="' + student.id + '"> ' +
-                        student.name + '<br>'
+                        studentName + '<br>'
                     );
                 });
             },
@@ -21,3 +24,10 @@ $(document).ready(function() {
         });
     });
 });
+
+// Função para capitalizar todas as palavras
+function capitalize(str) {
+    return str.split(' ').map(function(word) {
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+    }).join(' ');
+}
