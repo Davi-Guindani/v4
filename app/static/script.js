@@ -11,10 +11,11 @@ $(document).ready(function() {
                 response.students.forEach(function(student) {
                     // Capitaliza todas as palavras do nome do aluno
                     var studentName = capitalize(student.name);
+                    var studentLastName = capitalize(student.last_name);
                     
                     studentsContainer.append(
                         '<input type="checkbox" name="students" value="' + student.id + '"> ' +
-                        studentName + '<br>'
+                        studentName + ' ' + studentLastName + '<br>'
                     );
                 });
             },

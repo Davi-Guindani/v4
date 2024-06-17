@@ -56,7 +56,7 @@ def get_students():
         students = students_response.data
 
         # Preparar a resposta com os dados dos alunos
-        students_data = [{'id': student['id'], 'name': student['name']} for student in students]
+        students_data = [{'id': student['id'], 'name': student['name'], 'last_name': student['last_name']} for student in students]
         return jsonify({'students': students_data})
 
     except Exception as e:
