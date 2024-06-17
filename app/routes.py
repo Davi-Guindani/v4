@@ -62,10 +62,10 @@ def submit():
         print(date)
         print(selected_students)
 
-        '''# Verificar se todos os campos foram preenchidos
+        # Verificar se todos os campos foram preenchidos
         if not (teacher_id and class_id and date):
             return render_template('index.html', error="Por favor, preencha todos os campos.")
-
+        
         # Inserir dados na tabela ATTENDANCES
         attendance_data = {
             'teacher_id': teacher_id,
@@ -73,8 +73,8 @@ def submit():
             'date': date
         }
         response = app.supabase.table('ATTENDANCES').insert(attendance_data).execute()
-        attendance_id = response['data'][0]['id']  # Obter o ID da chamada de presença inserida
-
+        attendance_id = response.data[0]['id']  # Obter o ID da chamada de presença inserida
+        
         # Inserir dados na tabela ATTENDANCES_STUDENTS para cada aluno selecionado
         for student_id in selected_students:
             attendance_students_data = {
@@ -82,7 +82,7 @@ def submit():
                 'student_id': student_id
             }
             app.supabase.table('ATTENDANCES_STUDENTS').insert(attendance_students_data).execute()
-        '''
+        
         return "Dados enviados com sucesso!"
     
     except Exception as e:
