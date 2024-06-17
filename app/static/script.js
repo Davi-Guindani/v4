@@ -32,3 +32,37 @@ function capitalize(str) {
         return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
     }).join(' ');
 }
+
+$(document).ready(function() {
+    $('#attendance-form').submit(function(event) {
+        event.preventDefault(); // Prevent the form from submitting normally
+
+        const formData = $(this).serialize();
+
+        $.post('/submit', formData, function(response) {
+            if (response.error) {
+                if (response.error === 'Registro duplicado') {
+                    const edit = confirm('Registro duplicado encontrado. Deseja editar o registro existente?');
+                    if (edit) {
+                        window.location.href = `/edit_attendance/${response.attendance_id}`;
+                    }
+                } else {
+                    alert(response.error);
+                }
+            } else {
+                alert(response.success);
+                window.location.reload();
+            }
+        }).fail(function(jqXHR) {
+            const response = jqXHR.responseJSON;
+            if (response.error === 'Registro duplicado') {
+                const edit = confirm(`Registro duplicado encontrado (ID: ${response.attendance_id}). Deseja editar o registro existente?`);
+                if (edit) {
+                    window.location.href = `/edit_attendance/${response.attendance_id}`;
+                }
+            } else {
+                alert(response.error);
+            }
+        });
+    });
+});

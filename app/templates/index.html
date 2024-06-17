@@ -9,7 +9,7 @@
     <script src="../static/script.js"></script>
 </head>
 <body>
-    <form action="/submit" method="post">
+    <form id="attendance-form" action="/submit" method="post">
         <label for="teacher">Professor preenchendo a lista:</label>
         <select id="teacher" name="teacher" required>
             <option value="" disabled selected>-- Selecione um professor --</option>
@@ -25,7 +25,7 @@
             <option value="" disabled selected>-- Selecione uma turma --</option>
             {% for class in classes %}
                 <option value="{{ class.id }}">
-                    {{ class.sport.title() }} - {{ class.start_time }} às {{ class.end_time }} - {{ class.core }} - {{ class.age.title() }} - {{ class.genre.title() }} - {{ class.days | join(" e ") }}
+                    {{ class.sport.title() }} - {{ class.start_time }} às {{ class.end_time }} - {{ class.core }} - {{ class.age.title() }} - {{ class.genre.title() }} - {{ class.days | join(' e ') }}
                 </option>
             {% endfor %}
         </select>

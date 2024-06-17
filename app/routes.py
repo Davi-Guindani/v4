@@ -30,7 +30,6 @@ def index():
 
         days_dict = {day['id']: day['day'] for day in days}
 
-        # Adicionar os dias a cada turma e aplicar title a cada dia
         for c in classes:
             c['days'] = [days_dict[cd['day_id']].title() for cd in classes_days if cd['class_id'] == c['id']]
 
@@ -44,18 +43,14 @@ def index():
 def get_students():
     class_id = request.args.get('class_id')
     try:
-        # Buscar os registros da tabela CLASSES_STUDENTS para a turma selecionada
         classes_students_response = app.supabase.table('CLASSES_STUDENTS').select('*').eq('class_id', class_id).execute()
         classes_students = classes_students_response.data
 
-        # Obter todos os student_ids
         student_ids = [cs['student_id'] for cs in classes_students]
 
-        # Buscar os alunos correspondentes aos student_ids
         students_response = app.supabase.table('STUDENTS').select('*').in_('id', student_ids).execute()
         students = students_response.data
 
-        # Preparar a resposta com os dados dos alunos
         students_data = [{'id': student['id'], 'name': student['name'], 'last_name': student['last_name']} for student in students]
         return jsonify({'students': students_data})
 
@@ -66,31 +61,28 @@ def get_students():
 @app.route('/submit', methods=['POST'])
 def submit():
     try:
-        # Obter os dados do formulário
         teacher_id = request.form.get('teacher')
         class_id = request.form.get('class')
         date = request.form.get('date')
-        selected_students = request.form.getlist('students')  # Lista de IDs dos alunos marcados
+        selected_students = request.form.getlist('students')
 
-        print(teacher_id)
-        print(class_id)
-        print(date)
-        print(selected_students)
-
-        # Verificar se todos os campos foram preenchidos
         if not (teacher_id and class_id and date):
             return render_template('index.html', error="Por favor, preencha todos os campos.")
+
+        existing_attendance_response = app.supabase.table('ATTENDANCES').select('*').eq('class_id', class_id).eq('date', date).execute()
+        existing_attendance = existing_attendance_response.data
+
+        if existing_attendance:
+            return jsonify({'error': 'Registro duplicado', 'attendance_id': existing_attendance[0]['id']}), 409
         
-        # Inserir dados na tabela ATTENDANCES
         attendance_data = {
             'teacher_id': teacher_id,
             'class_id': class_id,
             'date': date
         }
         response = app.supabase.table('ATTENDANCES').insert(attendance_data).execute()
-        attendance_id = response.data[0]['id']  # Obter o ID da chamada de presença inserida
-        
-        # Inserir dados na tabela ATTENDANCES_STUDENTS para cada aluno selecionado
+        attendance_id = response.data[0]['id']
+
         for student_id in selected_students:
             attendance_students_data = {
                 'attendance_id': attendance_id,
@@ -98,8 +90,64 @@ def submit():
             }
             app.supabase.table('ATTENDANCES_STUDENTS').insert(attendance_students_data).execute()
         
-        return "Dados enviados com sucesso!"
+        return jsonify({'success': 'Dados enviados com sucesso!'})
     
     except Exception as e:
         print(f"Erro ao enviar dados: {e}")
-        return render_template('index.html', error="Erro ao enviar dados.")
+        return jsonify({'error': 'Erro ao enviar dados.'}), 500
+
+@app.route('/edit_attendance/<int:attendance_id>', methods=['GET', 'POST'])
+def edit_attendance(attendance_id):
+    if request.method == 'GET':
+        try:
+            attendance_response = app.supabase.table('ATTENDANCES').select('*').eq('id', attendance_id).execute()
+            attendance = attendance_response.data[0]
+
+            # Buscar todos os alunos da turma
+            class_id = attendance['class_id']
+            classes_students_response = app.supabase.table('CLASSES_STUDENTS').select('*').eq('class_id', class_id).execute()
+            classes_students = classes_students_response.data
+
+            student_ids = [cs['student_id'] for cs in classes_students]
+            students_response = app.supabase.table('STUDENTS').select('*').in_('id', student_ids).execute()
+            students = students_response.data
+
+            # Buscar alunos já registrados na presença
+            attendance_students_response = app.supabase.table('ATTENDANCES_STUDENTS').select('*').eq('attendance_id', attendance_id).execute()
+            attendance_students = attendance_students_response.data
+            registered_student_ids = [ats['student_id'] for ats in attendance_students]
+
+            teachers_response = app.supabase.table('TEACHERS').select('*').execute()
+            teachers = teachers_response.data
+
+            return render_template('edit_attendance.html', attendance=attendance, students=students, teachers=teachers, registered_student_ids=registered_student_ids)
+        
+        except Exception as e:
+            print(f"Erro ao buscar registro de presença: {e}")
+            return jsonify({'error': 'Erro ao buscar registro de presença.'}), 500
+
+    if request.method == 'POST':
+        try:
+            date = request.form.get('date')
+            teacher_id = request.form.get('teacher')
+            selected_students = request.form.getlist('students')
+
+            attendance_data = {
+                'date': date,
+                'teacher_id': teacher_id
+            }
+            app.supabase.table('ATTENDANCES').update(attendance_data).eq('id', attendance_id).execute()
+
+            app.supabase.table('ATTENDANCES_STUDENTS').delete().eq('attendance_id', attendance_id).execute()
+            for student_id in selected_students:
+                attendance_students_data = {
+                    'attendance_id': attendance_id,
+                    'student_id': student_id
+                }
+                app.supabase.table('ATTENDANCES_STUDENTS').insert(attendance_students_data).execute()
+            
+            return jsonify({'success': 'Dados atualizados com sucesso!'})
+        
+        except Exception as e:
+            print(f"Erro ao atualizar dados: {e}")
+            return jsonify({'error': 'Erro ao atualizar dados.'}), 500
