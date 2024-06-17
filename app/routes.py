@@ -19,6 +19,21 @@ def index():
         for c in classes:
             c['core'] = cores_dict.get(c['core_id'], 'Unknown')
 
+        # Obter dias para cada turma
+        classes_ids = [c['id'] for c in classes]
+        classes_days_response = app.supabase.table('CLASSES_DAYS').select('*').in_('class_id', classes_ids).execute()
+        classes_days = classes_days_response.data
+
+        day_ids = list(set([cd['day_id'] for cd in classes_days]))
+        days_response = app.supabase.table('DAYS').select('*').in_('id', day_ids).execute()
+        days = days_response.data
+
+        days_dict = {day['id']: day['day'] for day in days}
+
+        # Adicionar os dias a cada turma e aplicar title a cada dia
+        for c in classes:
+            c['days'] = [days_dict[cd['day_id']].title() for cd in classes_days if cd['class_id'] == c['id']]
+
     except Exception as e:
         classes = []
         print(f"Erro ao buscar turmas e lugares: {e}")

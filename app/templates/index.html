@@ -23,7 +23,7 @@
             <option value="" disabled selected>-- Selecione uma turma --</option>
             {% for class in classes %}
                 <option value="{{ class.id }}">
-                    {{ class.sport.title() }} - {{ class.start_time }} às {{ class.end_time }} - {{ class.core }} - {{ class.age.title() }} - {{ class.genre.title() }}
+                    {{ class.sport.title() }} - {{ class.start_time }} às {{ class.end_time }} - {{ class.core }} - {{ class.age.title() }} - {{ class.genre.title() }} - {{ class.days | join(" e ") }}
                 </option>
             {% endfor %}
         </select>
