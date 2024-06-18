@@ -20,9 +20,15 @@ form {
 }
 
 label {
-    display: block;
-    margin-bottom: 8px;
+    display: block; 
+    margin-bottom: 8px; 
     font-weight: bold;
+} 
+
+#students-container label {
+    display: inline; /* Garante que os labels dentro de #students-container sejam exibidos inline */
+    margin-bottom: 0; /* Remove o margin-bottom dos labels dentro de #students-container */
+    font-weight: normal; /* Define o peso da fonte como normal */
 }
 
 select, input[type="date"], input[type="text"] {
@@ -50,20 +56,8 @@ button:hover {
     background-color: #0056b3;
 }
 
-#students-container label {
-    all: unset; /* Reseta todos os estilos para os labels dentro do container */
-    font-weight: normal; /* Redefine o peso da fonte */
-    display: inline; /* Garante que o label seja exibido inline */
-}
 
-#students-container div {
-    margin-bottom: 8px;
-}
-
-#students-container input[type="checkbox"] {
-    margin-right: 10px; /* Espaçamento entre o checkbox e o label */
-}
-
+/* Regras para dispositivos móveis */
 @media (max-width: 600px) {
     body {
         font-size: 1.2rem; /* Ajusta o tamanho da fonte base para telas menores */
@@ -80,6 +74,6 @@ button:hover {
     }
 
     h1 {
-        font-size: 1.5rem; /* Ajusta o tamanho da fonte do título para melhor visualização */
+        font-size: 2rem; /* Ajusta o tamanho da fonte do título para melhor visualização */
     }
 }
