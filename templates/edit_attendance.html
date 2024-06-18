@@ -27,7 +27,7 @@
             {% for student in students %}
                 <div>
                     <input type="checkbox" id="student_{{ student.id }}" name="students" value="{{ student.id }}" {% if student.id in registered_student_ids %}checked{% endif %}>
-                    <label for="student_{{ student.id }}">{{ student.name }} {{ student.last_name }}</label>
+                    <label for="student_{{ student.id }}">{{ student.name.title() }} {{ student.last_name.title() }}</label>
                 </div>
             {% endfor %}
         </div>
