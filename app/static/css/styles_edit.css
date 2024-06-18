@@ -3,7 +3,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 100vh; /* Alterado para min-height */
     margin: 0;
     background-color: #f0f0f0;
     font-family: Arial, sans-serif;
@@ -50,14 +50,24 @@ button:hover {
     background-color: #0056b3;
 }
 
-#students-container {
-    margin-bottom: 16px;
+#students-container label {
+    all: unset; /* Reseta todos os estilos para os labels dentro do container */
+    font-weight: normal; /* Redefine o peso da fonte */
+    display: inline; /* Garante que o label seja exibido inline */
 }
 
-/* Regras para dispositivos móveis */
+#students-container div {
+    margin-bottom: 8px;
+}
+
+#students-container input[type="checkbox"] {
+    margin-right: 10px; /* Espaçamento entre o checkbox e o label */
+}
+
 @media (max-width: 600px) {
     body {
-        font-size: 1.5rem; /* Aumenta o tamanho da fonte base para telas menores */
+        font-size: 1.2rem; /* Ajusta o tamanho da fonte base para telas menores */
+        padding: 5%; /* Ajusta o padding do body para melhor espaçamento em telas pequenas */
     }
 
     form {
@@ -70,6 +80,6 @@ button:hover {
     }
 
     h1 {
-        font-size: 2rem;
+        font-size: 1.5rem; /* Ajusta o tamanho da fonte do título para melhor visualização */
     }
 }
