@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Editar Presença</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles_edit.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </head>
 <body>
     <form id="edit-attendance-form" action="/edit_attendance/{{ attendance.id }}" method="post">
         <label for="teacher">Professor preenchendo a lista:</label>
         <select id="teacher" name="teacher" required>
+            <option value="" disabled selected>-- Selecione um professor --</option>
             {% for teacher in teachers %}
                 <option value="{{ teacher.id }}" {% if teacher.id == attendance.teacher_id %}selected{% endif %}>
                     {{ teacher.name.title() }} {{ teacher.last_name.title()}}
@@ -25,7 +27,7 @@
             {% for student in students %}
                 <div>
                     <input type="checkbox" id="student_{{ student.id }}" name="students" value="{{ student.id }}" {% if student.id in registered_student_ids %}checked{% endif %}>
-                    <label for="student_{{ student.id }}">{{ student.name }}</label>
+                    <label for="student_{{ student.id }}">{{ student.name }} {{ student.last_name }}</label>
                 </div>
             {% endfor %}
         </div>
