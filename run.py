@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, request, jsonify, render_template, redirect, url_for, flash
 from config import Config
 from supabase import create_client
 from dash import Dash, html, dcc
@@ -161,11 +161,11 @@ def edit_attendance(attendance_id):
                 }
                 server.supabase.table('ATTENDANCES_STUDENTS').insert(attendance_students_data).execute()
             
-            return jsonify({'success': 'Dados atualizados com sucesso!'})
+            return redirect(url_for('index', success='1'))  # Redireciona para a página inicial após a atualização
         
         except Exception as e:
             print(f"Erro ao atualizar dados: {e}")
-            return jsonify({'error': 'Erro ao atualizar dados.'}), 500
+            return redirect(url_for('edit_attendance', attendance_id=attendance_id))
 
 app = Dash(server=server, routes_pathname_prefix="/dash/")
 

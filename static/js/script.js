@@ -66,3 +66,15 @@ $(document).ready(function() {
         });
     });
 });
+
+$(document).ready(function() {
+    // Verifica se o parâmetro success está presente na URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('success')) {
+        alert('Dados atualizados com sucesso!');
+        // Remove o parâmetro de query string para evitar múltiplos alertas
+        urlParams.delete('success');
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+});
