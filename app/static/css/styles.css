@@ -50,14 +50,14 @@ button:hover {
     background-color: #0056b3;
 }
 
-#students-container {
-    margin-bottom: 16px;
-}
+
 
 /* Regras para dispositivos móveis */
 @media (max-width: 600px) {
     body {
         font-size: 1.5rem; /* Aumenta o tamanho da fonte base para telas menores */
+        padding: 5%; /* Ajusta o padding do body para melhor espaçamento em telas pequenas */
+
     }
 
     form {
