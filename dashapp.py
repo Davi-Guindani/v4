@@ -9,7 +9,7 @@ def create_dash_app(flask_app):
     students_response = flask_app.supabase.table('STUDENTS').select('*').execute()
     students = students_response.data
 
-    # Criar DataFrame
+    # Criar DataFrame Pizza H-M
     students_df = pd.DataFrame(students)
 
     # Gráfico de pizza para porcentagem de homens e mulheres
@@ -22,6 +22,7 @@ def create_dash_app(flask_app):
         'frutas': ['Maçã', 'Banana', 'Laranja', 'Uva', 'Pêssego'],
         'qtd': [10, 5, 8, 12, 3]
     }
+    # Criar DataFrame Frutas
     df = pd.DataFrame(data)
 
     fig = px.bar(df, x='frutas', y='qtd')
