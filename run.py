@@ -1,9 +1,7 @@
 from flask import Flask, jsonify, request, render_template
 from config import Config
 from supabase import create_client
-from dash import Dash, html, dcc
-import pandas as pd
-import plotly.express as px
+from dashapp import create_dash_app
 
 
 server = Flask(__name__)
@@ -167,24 +165,7 @@ def edit_attendance(attendance_id):
             print(f"Erro ao atualizar dados: {e}")
             return jsonify({'error': 'Erro ao atualizar dados.'}), 500
 
-app = Dash(server=server, routes_pathname_prefix="/dash/")
-
-data = {
-    'Fruta': ['Maçã', 'Banana', 'Laranja', 'Uva', 'Pêssego'],
-    'Quantidade': [10, 5, 8, 12, 3],
-    'Preço Unitário': [2.5, 1.2, 1.0, 3.0, 2.8]
-}
-df = pd.DataFrame(data)
-
-fig = px.bar(df, x="Fruta", y="Quantidade")
-
-app.layout = html.Div(children=[
-    html.Div(children="This is the Dash app."), 
-    dcc.Graph(
-        id='grafico',
-        figure=fig
-    )
-])
+app = create_dash_app(server)
 
 if __name__ == '__main__':
     server.run(debug=True,host='0.0.0.0', port=5000)
