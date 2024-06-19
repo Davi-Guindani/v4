@@ -50,18 +50,34 @@ button:hover {
     background-color: #0056b3;
 }
 
+/* Estilizando as checkboxes */
+input[type="checkbox"] {
+    transform: scale(1.5); /* Ajuste o valor de escala conforme necessário */
+    -webkit-transform: scale(1.5); /* Para compatibilidade com navegadores WebKit */
+    -moz-transform: scale(1.5); /* Para compatibilidade com Firefox */
+    margin: 5px; /* Ajuste o espaçamento conforme necessário */
+}
 
+.student-name {
+    margin-left: 3px; /* Espaçamento entre o checkbox e o nome */
+}
+
+.student-item {
+    display: flex; /* Alinha melhor o nome com a checkbox */
+    align-items: center; /* Alinha o texto com a checkbox */
+    margin-bottom: 3px; /* Espaçamento entre cada linha da checkbox */
+    white-space: nowrap; /* Impede quebra de linha nos nomes */
+}
 
 /* Regras para dispositivos móveis */
 @media (max-width: 600px) {
     body {
-        font-size: 1.5rem; /* Aumenta o tamanho da fonte base para telas menores */
-        padding: 5%; /* Ajusta o padding do body para melhor espaçamento em telas pequenas */
-
+        font-size: 1.3rem; /* Aumenta o tamanho da fonte base para telas menores */
+        padding: 4%; /* Ajusta o padding do body para melhor espaçamento em telas pequenas */
     }
 
     form {
-        padding: 20px; /* Ajusta o padding do formulário em telas pequenas */
+        padding: 8px; /* Ajusta o padding do formulário em telas pequenas */
     }
 
     select, input[type="date"], input[type="text"], button {
@@ -72,4 +88,25 @@ button:hover {
     h1 {
         font-size: 2rem;
     }
+
+    .student-item {
+        margin-bottom: 10px; /* Espaçamento entre cada linha da checkbox */
+    }
+
+    #students-container {
+        overflow-x: auto;  /* Habilita a rolagem horizontal */
+        white-space: nowrap; /* Impede quebra de linha nos nomes */
+    }
+
+    html, body {
+        overflow-x: hidden; /* Impede overflow horizontal */
+    }
+    
+    input[type="checkbox"] {
+        transform: scale(1.5); /* Ajuste o valor de escala conforme necessário */
+        -webkit-transform: scale(1.6); /* Para compatibilidade com navegadores WebKit */
+        -moz-transform: scale(1.5); /* Para compatibilidade com Firefox */
+        margin: 5px; /* Ajuste o espaçamento conforme necessário */
+    }
+
 }

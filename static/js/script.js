@@ -14,8 +14,8 @@ $(document).ready(function() {
                     var studentLastName = capitalize(student.last_name);
                     
                     studentsContainer.append(
-                        '<input type="checkbox" name="students" value="' + student.id + '"> ' +
-                        studentName + ' ' + studentLastName + '<br>'
+                        '<div class="student-item"><input type="checkbox" name="students" value="' + student.id + '"> <span class="student-name">' +
+                        studentName + ' ' + studentLastName + '</span></div>'
                     );
                 });
             },
