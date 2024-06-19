@@ -1,8 +1,11 @@
-from flask import Flask, request, jsonify, render_template, redirect, url_for, flash
+from collections import Counter
+from datetime import datetime
+from flask import Flask, request, jsonify, render_template, redirect, url_for
+import pandas as pd
 from config import Config
 from supabase import create_client
-from dashapp import create_dash_app
-
+import plotly.graph_objs as go
+from dash import Dash, html, dcc
 
 server = Flask(__name__)
 server.config.from_object(Config)
@@ -165,7 +168,64 @@ def edit_attendance(attendance_id):
             print(f"Erro ao atualizar dados: {e}")
             return redirect(url_for('edit_attendance', attendance_id=attendance_id))
 
-app = create_dash_app(server)
+app = Dash(server=server, url_base_pathname='/dash/')
+
+def serve_layout():
+    attendances_response = server.supabase.table('ATTENDANCES').select('*').eq('class_id', 8).order('date').execute()
+    attendances_response = attendances_response.data
+    datas = list([at['date'] for at in attendances_response])
+    datas = [datetime.strptime(data, '%Y-%m-%d').date() for data in datas]
+
+    atids = list([at['id'] for at in attendances_response])
+    attendances_students_response = server.supabase.table('ATTENDANCES_STUDENTS').select('*').in_('attendance_id', atids).execute()
+    attendances_students_response = attendances_students_response.data
+    attendances_students_response = sorted(attendances_students_response, key=lambda x: x['attendance_id'])
+    attendace_students_counts = Counter(item['attendance_id'] for item in attendances_students_response)
+    occurrence_list = list(attendace_students_counts.values())
+    
+    df = pd.DataFrame(
+        {
+            'datas': datas,
+            'qtd': occurrence_list
+        }
+    )
+
+    figteste = go.Figure(go.Bar(x=df['datas'], y=df['qtd']))
+    figteste.layout = dict(xaxis=dict(type="category"))
+
+    attendances_response = server.supabase.table('ATTENDANCES').select('*').eq('class_id', 1).order('date').execute()
+    attendances_response = attendances_response.data
+    datas = list([at['date'] for at in attendances_response])
+    datas = [datetime.strptime(data, '%Y-%m-%d').date() for data in datas]
+
+    atids = list([at['id'] for at in attendances_response])
+    attendances_students_response = server.supabase.table('ATTENDANCES_STUDENTS').select('*').in_('attendance_id', atids).execute()
+    attendances_students_response = attendances_students_response.data
+    attendances_students_response = sorted(attendances_students_response, key=lambda x: x['attendance_id'])
+    attendace_students_counts = Counter(item['attendance_id'] for item in attendances_students_response)
+    occurrence_list = list(attendace_students_counts.values())
+    
+    df = pd.DataFrame(
+        {
+            'datas': datas,
+            'qtd': occurrence_list
+        }
+    )
+
+    figteste2 = go.Figure(go.Bar(x=df['datas'], y=df['qtd']))
+    figteste2.layout = dict(xaxis=dict(type="category"))
+
+    layout = html.Div([
+        html.A('voltar pra home', href='../'),
+        html.H1('Turma 20:00 às 21:15'),
+        dcc.Graph(id='grafico teste', figure=figteste),
+        html.H1('Turma 18:45 às 20:00'),
+        dcc.Graph(id='grafico teste 2', figure=figteste2)
+    ])
+
+    return layout
+
+app.layout = serve_layout
 
 if __name__ == '__main__':
     server.run(debug=True,host='0.0.0.0', port=5000)
