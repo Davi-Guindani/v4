@@ -228,3 +228,6 @@ def serve_layout():
     return layout
 
 dashapp.layout = serve_layout
+
+if __name__ == "__main__":
+    app.run(debug=True)
