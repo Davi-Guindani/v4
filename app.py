@@ -16,6 +16,7 @@ app.config['SUPABASE_URL'] = os.getenv('SUPABASE_URL')
 app.config['SUPABASE_KEY'] = os.getenv('SUPABASE_KEY')
 
 app.supabase = create_client(os.getenv('SUPABASE_URL'), os.getenv('SUPABASE_KEY'))
+server = app.server
 
 @app.route('/', methods=['GET'])
 def index():
@@ -230,5 +231,4 @@ def serve_layout():
 dashapp.layout = serve_layout
 
 if __name__ == "__main__":
-    app.run(debug=True)
-    # app.run(debug=True,host='0.0.0.0', port=5000)
+    app.run(debug=False,host='0.0.0.0', port=80)
