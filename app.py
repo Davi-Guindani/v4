@@ -16,7 +16,6 @@ app.config['SUPABASE_URL'] = os.getenv('SUPABASE_URL')
 app.config['SUPABASE_KEY'] = os.getenv('SUPABASE_KEY')
 
 app.supabase = create_client(os.getenv('SUPABASE_URL'), os.getenv('SUPABASE_KEY'))
-server = app.server
 
 @app.route('/', methods=['GET'])
 def index():
