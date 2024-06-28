@@ -21,6 +21,9 @@
             {% endfor %}
         </select>
         <br>
+        <label for="date">Data:</label>
+        <input type="date" id="date" name="date" required>
+        <br>
         <label for="class">Turma:</label>
         <select id="class" name="class" required>
             <option value="" disabled selected>-- Selecione uma turma --</option>
@@ -30,9 +33,6 @@
                 </option>
             {% endfor %}
         </select>
-        <br>
-        <label for="date">Data:</label>
-        <input type="date" id="date" name="date" required>
         <br>
         <div id="students-container" >
             <!-- Os checkboxes dos alunos serão adicionados aqui -->
