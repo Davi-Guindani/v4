@@ -84,9 +84,6 @@ def submit():
         date = request.form.get('date')
         selected_students = request.form.getlist('students')
 
-        if not (teacher_id and class_id and date):
-            return render_template('index.html', error="Por favor, preencha todos os campos.")
-
         existing_attendance_response = app.supabase.table('ATTENDANCES').select('*').eq('class_id', class_id).eq('date', date).execute()
         existing_attendance = existing_attendance_response.data
 
