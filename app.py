@@ -4,12 +4,18 @@ from dotenv import load_dotenv
 import os
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'  # Defina sua secret key
 
+# Carregar variáveis de ambiente
 load_dotenv()
 
-app.secret_key = os.getenv('SECRET_KEY')
-
+# Criar cliente Supabase com variáveis de ambiente
 app.supabase = supabase.create_client(os.getenv('SUPABASE_URL'), os.getenv('SUPABASE_KEY'))
+
+@app.route('/')
+def home():
+    user_logged_in = 'user_id' in session
+    return render_template('home.html', logged_in=user_logged_in)
 
 @app.route('/sign_up', methods=['GET', 'POST'])
 def sign_up():
@@ -39,8 +45,8 @@ def login():
 
         try:
             response = app.supabase.auth.sign_in_with_password(user_data)
-            session['user_id'] = response.user.id 
-            return redirect(url_for('welcome'))
+            session['user_id'] = response.user.id  # Armazenar o ID do usuário na sessão
+            return redirect(url_for('home'))
         except Exception as e:
             return str(e)
     
@@ -63,7 +69,8 @@ def protected():
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
-    return redirect(url_for('login'))
+    return redirect(url_for('home'))
 
 if __name__ == "__main__":
     app.run(debug=True)
+    # app.run(debug=False, host='0.0.0.0', port=80)

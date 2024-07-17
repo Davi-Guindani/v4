@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        .protected-button {
+            color: white;
+            background-color: red;
+        }
+        .protected-button.logged-in {
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Our Platform</h1>
+    <p>Esta é a página inicial.</p>
+    <div style="background-image: url('/path/to/your/background.jpg'); height: 200px; background-size: cover;">
+        <!-- Conteúdo comum -->
+    </div>
+    
+    {% if logged_in %}
+        <p>Você está logado!</p>
+        <button onclick="window.location.href='/protected'" class="protected-button logged-in">Acessar Página Protegida</button>
+        <button onclick="window.location.href='/logout'">Logout</button>
+    {% else %}
+        <p>Você não está logado.</p>
+        <button onclick="window.location.href='/login'">Login</button>
+        <button onclick="window.location.href='/sign_up'">Sign Up</button>
+        <button onclick="window.location.href='/protected'" class="protected-button">Acessar Página Protegida</button>
+    {% endif %}
+</body>
+</html>
