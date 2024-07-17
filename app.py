@@ -37,7 +37,7 @@ def login():
         user_data = {'email': email, 'password': password}
 
         try:
-            response = app.supabase.auth.sign_in_with_password(user_data)
+            session = app.supabase.auth.sign_in_with_password(user_data)
             return redirect(url_for('welcome'))
         except Exception as e:
             return str(e)
