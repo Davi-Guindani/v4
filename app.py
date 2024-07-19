@@ -4,13 +4,11 @@ from dotenv import load_dotenv
 import os
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Defina sua secret key
 
-# Carregar variáveis de ambiente
 load_dotenv()
 
-# Criar cliente Supabase com variáveis de ambiente
 app.supabase = supabase.create_client(os.getenv('SUPABASE_URL'), os.getenv('SUPABASE_KEY'))
+app.secret_key = os.getenv('SECRET_KEY')
 
 @app.route('/')
 def home():
