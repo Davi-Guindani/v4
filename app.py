@@ -43,7 +43,7 @@ def login():
 
         try:
             response = app.supabase.auth.sign_in_with_password(user_data)
-            session['user_id'] = response.user.id  # Armazenar o ID do usuário na sessão
+            session['user_id'] = response.user.id  
             return redirect(url_for('home'))
         except Exception as e:
             return str(e)
@@ -62,10 +62,14 @@ def protected():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     
+    response = app.supabase.auth.get_session()
+    print(response)
+    
     return "Esta é uma página protegida. Você está logado."
 
 @app.route('/logout')
 def logout():
+    response = app.supabase.auth.sign_out()
     session.pop('user_id', None)
     return redirect(url_for('home'))
 
