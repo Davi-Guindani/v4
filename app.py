@@ -61,10 +61,7 @@ def welcome():
 def protected():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-    
-    response = app.supabase.auth.get_session()
-    print(response)
-    
+        
     return "Esta é uma página protegida. Você está logado."
 
 @app.route('/logout')
