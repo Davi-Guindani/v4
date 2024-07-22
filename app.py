@@ -4,12 +4,10 @@ from dotenv import load_dotenv
 import os
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Defina sua secret key
+app.secret_key = os.getenv('SECRET_KEY')
 
-# Carregar variáveis de ambiente
 load_dotenv()
 
-# Criar cliente Supabase com variáveis de ambiente
 app.supabase = supabase.create_client(os.getenv('SUPABASE_URL'), os.getenv('SUPABASE_KEY'))
 
 @app.route('/')
@@ -47,7 +45,7 @@ def login():
 
         try:
             response = app.supabase.auth.sign_in_with_password(user_data)
-            session['user_id'] = response.user.id  # Armazenar o ID do usuário na sessão
+            session['user_id'] = response.user.id
             user_metadata = response.user.user_metadata
             session['user_type'] = user_metadata.get('user_type')
             return redirect(url_for('home'))
@@ -58,10 +56,10 @@ def login():
 
 @app.route('/welcome')
 def welcome():
-    if 'user_id' in session:
-        return "Bem-vindo! Login realizado com sucesso."
-    else:
+    if 'user_id' not in session:
         return redirect(url_for('login'))
+    
+    return "Bem-vindo! Login realizado com sucesso."
 
 @app.route('/protected')
 def protected():
@@ -87,10 +85,12 @@ def manage_students():
 
 @app.route('/logout')
 def logout():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
     session.pop('user_id', None)
     session.pop('user_type', None)
     return redirect(url_for('home'))
 
 if __name__ == "__main__":
     app.run(debug=True)
-    # app.run(debug=False, host='0.0.0.0', port=80)
