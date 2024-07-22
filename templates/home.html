@@ -22,8 +22,11 @@
     </div>
     
     {% if logged_in %}
-        <p>Você está logado!</p>
+        <p>Você está logado como {{ user_type }}!</p>
         <button onclick="window.location.href='/protected'" class="protected-button logged-in">Acessar Página Protegida</button>
+        {% if user_type == 'manager' %}
+            <button onclick="window.location.href='/manage_students'">Gerenciar Alunos</button>
+        {% endif %}
         <button onclick="window.location.href='/logout'">Logout</button>
     {% else %}
         <p>Você não está logado.</p>
