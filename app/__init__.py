@@ -4,7 +4,7 @@ import os
 
 def create_app():
     app = Flask(__name__)
-    app.secret_key = 'your_secret_key'
+    app.secret_key = os.getenv('SECRET_KEY')
 
     load_dotenv()
     from .supabase import supabase_client
