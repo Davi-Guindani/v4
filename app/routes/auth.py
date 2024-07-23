@@ -32,7 +32,7 @@ def login():
 
         try:
             response = supabase_client().auth.sign_in_with_password(user_data)
-            session['user_id'] = response.user.id
+            session['user_id'] = response.user.id  # Armazenar o ID do usuário na sessão
             user_metadata = response.user.user_metadata
             session['user_type'] = user_metadata.get('user_type')
             return redirect(url_for('main.home'))
@@ -46,3 +46,21 @@ def logout():
     session.pop('user_id', None)
     session.pop('user_type', None)
     return redirect(url_for('main.home'))
+
+@auth_bp.route('/account')
+def account():
+    if 'user_id' not in session:
+        return redirect(url_for('auth.login'))
+    return "Página da Conta"
+
+@auth_bp.route('/my_class')
+def my_class():
+    if 'user_id' not in session:
+        return redirect(url_for('auth.login'))
+    return "Página da Turma"
+
+@auth_bp.route('/billing')
+def billing():
+    if 'user_id' not in session:
+        return redirect(url_for('auth.login'))
+    return "Página de Mensalidade"

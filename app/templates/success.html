@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Success</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
     <h2>Usuário criado com sucesso!</h2>
-    <button onclick="window.location.href='/login'">Ir para Login</button>
+    <a href="{{ url_for('auth.login') }}">Ir para Login</a>
 </body>
 </html>
